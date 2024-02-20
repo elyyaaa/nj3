@@ -1,0 +1,19 @@
+.modalWrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0,0,0,0.3);
+    position: absolute;
+}
+.modalContent{
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background-color: #deb8b8;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
