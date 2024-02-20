@@ -1,7 +1,7 @@
 import './App.css';
 import Modal from "./components /modal/Modal";
 import List from "./components /list/List";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Input from "./components /input/Input";
 import {Button} from "./components /header/button/Button";
 
@@ -25,7 +25,7 @@ function App() {
     };
 
     const handleAddTask = () => {
-        setTasks(prevTasks => [
+        setTasks((prevTasks) => [
             ...prevTasks,
             { id: tasks.length + 1, title: input, completed: false }
         ]);
@@ -34,18 +34,33 @@ function App() {
     };
 
     const handleDeleteTask = (id) => {
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
-
+        const updatedTasks = tasks.filter((task) => task.id !== id);
+        setTasks(updatedTasks);
     };
+
+    const handleDoneTask = (id) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === id ? { ...task, completed: !task.completed } : task
+            )
+        );
+    };
+
+    const handleEditTask = ({ id, title }) => {
+        const updatedTasks = tasks.map((task) =>
+            task.id === id ? { ...task, title } : task
+        );
+        setTasks(updatedTasks);
+    };
+
     const handleSearch = (value) => {
         setSearch(value);
-
-        const filteredTasks = tasks.filter((task) =>
-            task.title.toLowerCase().includes(value.toLowerCase())
-        );
-
-        setTasks(filteredTasks);
+        // Ваша логика фильтрации поиска
     };
+
+    useEffect(() => {
+        console.log('useEffect');
+    }, [tasks]);
 
     return (
         <>
@@ -65,9 +80,16 @@ function App() {
                 value={search}
             />
             <button onClick={handleShowModal}>открыть</button>
-            <List tasks={tasks} handleDelete={handleDeleteTask} />
+            <List
+                tasks={tasks}
+                handleDelete={handleDeleteTask}
+                handleDone={handleDoneTask}
+                handleEdit={handleEditTask}
+            />
         </>
     );
 }
+
+
 
 export default App;
